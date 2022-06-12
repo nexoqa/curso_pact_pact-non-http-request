@@ -1,0 +1,8 @@
+#mvn
+**/target
+
+#editor
+.vscode
+
+#extras
+**/.apt_generated
