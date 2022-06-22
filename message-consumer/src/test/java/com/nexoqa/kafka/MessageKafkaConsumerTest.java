@@ -8,6 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.nexoqa.model.Contact;
+import com.nexoqa.model.Address;
 
 import au.com.dius.pact.consumer.MessagePactBuilder;
 import au.com.dius.pact.consumer.junit.MessagePactProviderRule;
@@ -30,11 +31,16 @@ public class MessageKafkaConsumerTest {
         contact.setContactId(1);
         contact.setFirstName("Bububombo");
         contact.setLastName("Tekateka");
+        contact.setAddress(new Address("street 1",1,"City 1"));
 
         PactDslJsonBody body = new PactDslJsonBody()
             .integerType("contactId", contact.getContactId())
             .stringType("firstName", contact.getFirstName())
             .stringType("lastName", contact.getLastName())
+            .object("address")
+            .stringType("street", contact.getAddress().getStreet())
+            .integerType("number", contact.getAddress().getNumber())
+            .stringType("city", contact.getAddress().getCity())
             .asBody();
 
 

@@ -98,7 +98,8 @@
                 <version>3.0.0-M3</version>
                 <configuration>
                     <systemPropertyVariables>
-                        <pact.rootDir>target/pacts</pact.rootDir>
+                        <pact.verifier.publishResults>true</pact.verifier.publishResults>
+                        <pact.provider.version>${project.version}</pact.provider.version>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>

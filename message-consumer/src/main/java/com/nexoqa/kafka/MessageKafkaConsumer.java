@@ -2,6 +2,7 @@ package com.nexoqa.kafka;
 
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexoqa.model.Contact;
 
@@ -56,6 +57,12 @@ public class MessageKafkaConsumer {
           ConsumerRecord record = (ConsumerRecord) objectRecord;
           System.out.println("Key: " + record.key() + ", Value: " + record.value());
           System.out.println("Partition: " + record.partition() + ", Offset: " + record.offset());
+          
+          ObjectMapper objectMapper = new ObjectMapper();
+          Contact contact = objectMapper.treeToValue((JsonNode)record.value(), Contact.class);
+          
+          System.out.println(contact);
+
         }
 
         // for (Object partition : records.partitions()) {

@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexoqa.model.Contact;
+import com.nexoqa.model.Address;
 
 @RunWith(PactRunner.class)
 @Provider("MessageKafkaProducer")
@@ -32,6 +33,7 @@ public class MessageKafkaProducerTest {
     contact.setContactId(1);
     contact.setFirstName("Bububombo");
     contact.setLastName("Tekateka");
+    contact.setAddress(new Address("Street 1",1,"City 1"));
     ObjectMapper objectMapper = new ObjectMapper();
     JsonNode jsonNode = objectMapper.valueToTree(contact);
     return jsonNode.toPrettyString();

@@ -13,6 +13,7 @@ public class Contact {
     private int contactId;
     private String firstName;
     private String lastName;
+    private Address address;
 
 }
 

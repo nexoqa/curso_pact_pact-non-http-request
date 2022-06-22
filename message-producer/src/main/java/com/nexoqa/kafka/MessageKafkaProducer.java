@@ -7,6 +7,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexoqa.model.Contact;
+import com.nexoqa.model.Address;
 
 import java.util.Properties;
 import java.io.IOException;
@@ -42,6 +43,7 @@ public class MessageKafkaProducer
             contact.setContactId(1);
             contact.setFirstName("Bububombo");
             contact.setLastName("Tekateka");
+            contact.setAddress(new Address("Street 10",10,"City 10"));
             JsonNode jsonNode = objectMapper.valueToTree(contact);
             ProducerRecord rec = new ProducerRecord(topicName, jsonNode);
             producer.send(rec);
