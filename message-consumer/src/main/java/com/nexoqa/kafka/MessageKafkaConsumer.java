@@ -26,7 +26,7 @@ public class MessageKafkaConsumer {
 
   public int consume() {
     // Create a consumer
-    KafkaConsumer consumer;
+    KafkaConsumer<String, JsonNode> consumer;
     // Configure the consumer
     Properties properties = new Properties();
     // Point it to the brokers
@@ -44,22 +44,22 @@ public class MessageKafkaConsumer {
     // with the earliest record in the stream.
     properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
-    consumer = new KafkaConsumer<>(properties);
+    consumer = new KafkaConsumer<String, JsonNode>(properties);
     int count = 0;
     try {
       Duration interval = Duration.ofMinutes(2);
       consumer.subscribe(Collections.singletonList(topicName));
       while (true) {
         // Poll for records
-        ConsumerRecords records = consumer.poll(interval);
+        ConsumerRecords<String, JsonNode> records = consumer.poll(interval);
 
-        for (Object objectRecord : records) {
-          ConsumerRecord record = (ConsumerRecord) objectRecord;
+        for (ConsumerRecord<String, JsonNode> record : records) {
+
           System.out.println("Key: " + record.key() + ", Value: " + record.value());
           System.out.println("Partition: " + record.partition() + ", Offset: " + record.offset());
 
           ObjectMapper objectMapper = new ObjectMapper();
-          Contact contact = objectMapper.treeToValue((JsonNode) record.value(), Contact.class);
+          Contact contact = objectMapper.treeToValue(record.value(), Contact.class);
 
           System.out.println(contact);
 

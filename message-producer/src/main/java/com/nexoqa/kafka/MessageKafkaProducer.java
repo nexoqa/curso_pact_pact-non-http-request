@@ -1,6 +1,5 @@
 package com.nexoqa.kafka;
 
-
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
@@ -11,8 +10,7 @@ import com.nexoqa.model.Contact;
 import java.util.Properties;
 import java.io.IOException;
 
-public class MessageKafkaProducer
-{
+public class MessageKafkaProducer {
     final private String brokers;
     final private String topicName;
 
@@ -21,8 +19,7 @@ public class MessageKafkaProducer
         this.topicName = topicName;
     }
 
-    public void produce() throws IOException
-    {
+    public void produce() throws IOException {
 
         // Set properties used to configure the producer
         Properties properties = new Properties();
@@ -32,9 +29,10 @@ public class MessageKafkaProducer
         properties.setProperty("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         properties.setProperty("value.serializer", "org.apache.kafka.connect.json.JsonSerializer");
         // specify the protocol for SSL Encryption This is needed for secure clusters
-        //properties.setProperty(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT");
+        // properties.setProperty(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG,
+        // "SASL_PLAINTEXT");
 
-        KafkaProducer producer = new KafkaProducer(properties);
+        KafkaProducer<String, JsonNode> producer = new KafkaProducer<String, JsonNode>(properties);
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -43,7 +41,9 @@ public class MessageKafkaProducer
             contact.setFirstName("Bububombo");
             contact.setLastName("Tekateka");
             JsonNode jsonNode = objectMapper.valueToTree(contact);
-            ProducerRecord rec = new ProducerRecord(topicName, jsonNode);
+            String messageKey = "Contact-" + contact.getContactId();
+            ProducerRecord<String, JsonNode> rec = new ProducerRecord<String, JsonNode>(topicName, messageKey,
+                    jsonNode);
             producer.send(rec);
 
         } catch (Exception ex) {
@@ -52,12 +52,12 @@ public class MessageKafkaProducer
             producer.close();
         }
     }
-    
+
     public static void main(String[] args) throws IOException {
-        
+
         MessageKafkaProducer producer = new MessageKafkaProducer("localhost:9092", "testTopic");
         producer.produce();
-            
+
     }
 
 }
