@@ -23,16 +23,29 @@ docker-compose down
 cd kafka
 docker-compose up -d
 ```
-# See pact broker logs
+# See Kafka logs
 ```
 cd kafka
 docker-compose logs -f broker
 ```
 
-# Shut down pact broker
+# Shut down Kafka
 ```
 cd kafka
 docker-compose down
+```
+
+# Create Kafka topic
+```
+docker exec broker kafka-topics --bootstrap-server broker:9092 --create --topic testTopic
+```
+
+
+# To execute the consumer
+```
+cd message-consumer
+mvn clean install
+mvn exec:java@consumer
 ```
 
 # To execute the producer
@@ -40,13 +53,6 @@ docker-compose down
 cd message-producer
 mvn clean install
 mvn exec:java@producer
-```
-
-# To execute the consumer
-```
-cd message-consumer
-mvn clean install
-mvn exec:java@consumer
 ```
 
 # Ejercicio
